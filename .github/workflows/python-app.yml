@@ -24,11 +24,13 @@ jobs:
             sudo apt-get update
             sudo apt-get install -y python3-pip python3-venv git
 
-            if [ ! -d "/balbambalbam-ai-server" ]; then
+            cd ~
+            
+            if [ ! -d "balbambalbam-ai-server" ]; then
               git clone https://github.com/your-repo/balbambalbam-ai-server.git /balbambalbam-ai-server
             fi
 
-            cd /balbambalbam-ai-server
+            cd balbambalbam-ai-server
 
             git pull origin main
 
