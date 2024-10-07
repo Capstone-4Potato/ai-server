@@ -5,6 +5,8 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 async def generate_voice(gender, age, text):
+    print('generate_voice start')
+    
     client_id = os.getenv('NAVER_TTS_API_ID')
     client_secret = os.getenv('NAVER_TTS_API_SECRET')
     
