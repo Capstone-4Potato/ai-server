@@ -22,7 +22,7 @@ jobs:
           port: 22
           script: |
             sudo apt-get update
-            sudo apt-get install -y python3-pip python3-venv git python3.10
+            sudo apt-get install -y python3-pip python3-venv git
             
             cd $HOME
 
@@ -34,20 +34,20 @@ jobs:
             
             git pull origin main
 
+            cd balbambalbam-ai-server/
+
             if [ ! -d ".venv" ]; then
-              python3.10 -m venv .venv
+              python3 -3.10 -m venv .venv
             fi
 
             source .venv/bin/activate
             pip install --upgrade pip
             pip install -r requirements.txt
 
-            export NAVER_TTS_API_ID=${{ secrets.NAVER_TTS_API_ID }}
-            export NAVER_TTS_API_SECRET=${{ secrets.NAVER_TTS_API_SECRET }}
+            echo "export NAVER_TTS_API_ID='${{ secrets.NAVER_TTS_API_ID }}'" >> ~/.bashrc
+            echo "export NAVER_TTS_API_SECRET='${{ secrets.NAVER_TTS_API_SECRET }}'" >> ~/.bashrc
+            source ~/.bashrc
             
-            echo "NAVER_TTS_API_ID: $NAVER_TTS_API_ID"
-            echo "NAVER_TTS_API_SECRET: $NAVER_TTS_API_SECRET"
-
             nohup .venv/bin/uvicorn app:app --host 0.0.0.0 --port 5000 >> ai-server.log 2>&1 &
 
             sleep 5
@@ -61,6 +61,4 @@ jobs:
 
             cd test
             output=$(python3 sys_con_test.py)
-            echo "$output"
-
-            tail -n 50 ai-server.log | tee -a ~/deploy.log
+            echo "$output" | tee -a ~/deploy.log
