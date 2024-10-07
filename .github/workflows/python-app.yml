@@ -50,8 +50,6 @@ jobs:
             nohup .venv/bin/uvicorn app:app --host 0.0.0.0 --port 5000 >> ai-server.log 2>&1 &
 
             sleep 5
-
-            cd test
             
             if ! pgrep -f "uvicorn app:app"; then
               echo "Error: Uvicorn failed to start. Check ai-server.log for details." | tee -a ~/deploy.log
