@@ -27,8 +27,8 @@ def get_test_data(endpoint):
     elif endpoint == 'voice':
         return {
             'gender': 1,
-            'age': 20,
-            'text': '몸 조리 잘 해',
+            'age': 14,
+            'text': '아',
         }
     elif endpoint == 'test':
         return {
