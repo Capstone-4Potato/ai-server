@@ -29,6 +29,9 @@ async def get_voice_request(request: Request) -> JSONResponse:
     
     # generate voice
     try:
+        print(gender, age, text)
+        print('why????-------------------')
+
         correct_audio = await generate_voice(gender, age, text)
         print('why????-------------------')
     except Exception as e:
