@@ -8,7 +8,7 @@ def read_file_to_base64(filepath):
     return content.strip()
 
 async def send_request_and_print_status(url, data, print_response=False):
-    timeout = httpx.Timeout(10.0)
+    timeout = httpx.Timeout(15.0)
     async with httpx.AsyncClient(timeout=timeout) as client:
         response = await client.post(url, json=data)
         print(f"Status Code for {url}: {response.status_code}")
