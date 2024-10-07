@@ -43,10 +43,15 @@ jobs:
             source .venv/bin/activate
             pip install --upgrade pip
             pip install -r requirements.txt
+
+            export NAVER_TTS_API_ID=${{ secrets.NAVER_TTS_API_ID }}
+            export NAVER_TTS_API_SECRET=${{ secrets.NAVER_TTS_API_SECRET }}
             
             nohup .venv/bin/uvicorn app:app --host 0.0.0.0 --port 5000 >> ai-server.log 2>&1 &
 
             sleep 5
+
+            cd test
             
             if ! pgrep -f "uvicorn app:app"; then
               echo "Error: Uvicorn failed to start. Check ai-server.log for details." | tee -a ~/deploy.log
@@ -54,3 +59,7 @@ jobs:
             else
               echo "Uvicorn started successfully." | tee -a ~/deploy.log
             fi
+
+            cd test
+            output=$(python3 sys_con_test.py)
+            echo "$output"
