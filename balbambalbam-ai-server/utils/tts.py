@@ -2,9 +2,13 @@ import base64
 import httpx
 import os
 import sys
+from dotenv import load_dotenv
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '.env'))
 
 async def generate_voice(gender, age, text):
+
     client_id = os.getenv('NAVER_TTS_API_ID')
     client_secret = os.getenv('NAVER_TTS_API_SECRET')
     
