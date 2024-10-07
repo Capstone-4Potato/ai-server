@@ -22,12 +22,24 @@ jobs:
           port: 22
           script: |
             sudo apt-get update
-            sudo apt-get install -y python3-pip
+            sudo apt-get install -y python3-pip python3-venv git
+
+            if [ ! -d "/balbambalbam-ai-server" ]; then
+              git clone https://github.com/your-repo/balbambalbam-ai-server.git /balbambalbam-ai-server
+            fi
 
             cd /balbambalbam-ai-server
 
             git pull origin main
 
+            if [ ! -d ".venv" ]; then
+              python3 -m venv .venv
+            fi
+
+            source .venv/bin/activate
+            
+            pip install --upgrade pip
+
             pip install -r requirements.txt
 
-            nohup uvicorn main:app --host 0.0.0.0 --port 8000 &
+            nohup .venv/bin/uvicorn main:app --host 0.0.0.0 --port 8000 &
