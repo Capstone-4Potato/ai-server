@@ -30,6 +30,7 @@ async def get_voice_request(request: Request) -> JSONResponse:
     # generate voice
     try:
         correct_audio = await generate_voice(gender, age, text)
+        print('why????-------------------')
     except Exception as e:
         print("failed to generate voice (TTS)")
         raise HTTPException(status_code=500, detail="failed to generate voice (TTS)")

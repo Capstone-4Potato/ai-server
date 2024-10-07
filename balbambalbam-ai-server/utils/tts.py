@@ -8,6 +8,11 @@ async def generate_voice(gender, age, text):
     client_id = os.getenv('NAVER_TTS_API_ID')
     client_secret = os.getenv('NAVER_TTS_API_SECRET')
     
+    print('setting client_id and client_secret')
+
+    print("client_id: ", client_id)
+    print("client_secret: ", client_secret)
+
     # Determine the speaker based on gender and age
     if gender == 1:
         if age <= 14:
@@ -41,11 +46,15 @@ async def generate_voice(gender, age, text):
         "X-NCP-APIGW-API-KEY-ID": client_id,
         "X-NCP-APIGW-API-KEY": client_secret
     }
+
+    print('before request')
     
     async with httpx.AsyncClient() as client:
         response = await client.post("https://naveropenapi.apigw.ntruss.com/tts-premium/v1/tts", 
                                      data=request_data, 
                                      headers=request_headers)
+        
+    print('after request')
     
     # Check the response status
     if response.status_code == 200:
