@@ -31,7 +31,7 @@ jobs:
             echo "Current directory: $(pwd)"
 
             if [ ! -d "balbambalbam-ai-server" ]; then
-              git clone https://github.com/Capstone-4Potato/ai-server.git /balbambalbam-ai-server
+              git clone https://github.com/Capstone-4Potato/ai-server.git balbambalbam-ai-server
             fi
 
             cd balbambalbam-ai-server
