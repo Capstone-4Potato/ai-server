@@ -1,67 +1,35 @@
-name: CI/CD Pipeline
+name: CI/CD FastAPI Deploy to EC2
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
-env:
-  DOCKER_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/balbam-dev
+    branches:
+      - main  
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v0.1.6
         with:
-          python-version: '3.10'
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            sudo apt-get update
+            sudo apt-get install -y python3-pip
 
-      - name: Install dependencies
-        working-directory: balbambalbam-ai-server
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+            cd /balbambalbam-ai-server
 
-      - name: Create .env file
-        run: |
-          echo NAVER_TTS_API_ID=${{ secrets.NAVER_TTS_API_ID }} >> .env
-          echo NAVER_TTS_API_SECRET=${{ secrets.NAVER_TTS_API_SECRET }} >> .env
+            pkill -f 'uvicorn main:app'
 
-      - name: Build Docker image
-        working-directory: balbambalbam-ai-server
-        run: docker build -t ${{ env.DOCKER_IMAGE }} .
+            git pull origin main
 
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+            pip install -r requirements.txt
 
-      - name: Push Docker image
-        run: docker push ${{ env.DOCKER_IMAGE }}
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Pull latest Docker image
-        run: docker pull ${{ env.DOCKER_IMAGE }}
-
-      - name: Stop existing container
-        run: docker stop github-actions-demo || true
-
-      - name: Remove existing container
-        run: docker rm github-actions-demo || true
-
-      - name: Run new container
-        run: |
-          docker run --name github-actions-demo \
-            --rm -d -p 8000:8000 \
-            -e NAVER_TTS_API_ID=${{ secrets.NAVER_TTS_API_ID }} \
-            -e NAVER_TTS_API_SECRET=${{ secrets.NAVER_TTS_API_SECRET }} \
-            ${{ env.DOCKER_IMAGE }}
+            nohup uvicorn main:app --host 0.0.0.0 --port 8000 &
