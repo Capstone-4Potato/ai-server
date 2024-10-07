@@ -3,7 +3,6 @@ import speech_recognition as sr
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from utils import load_config
 from utils.file_conversion import base64_to_wav
 
 def create_user_text(audio_base64):
