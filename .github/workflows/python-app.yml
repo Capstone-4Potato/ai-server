@@ -1,4 +1,4 @@
-name: CI/CD FastAPI Deploy to EC2
+name: Balbambalbam-Test-Server-EC2
 
 on:
   push:
@@ -24,30 +24,32 @@ jobs:
             sudo apt-get update
             sudo apt-get install -y python3-pip python3-venv git
             
-            echo "Current directory: $(pwd)"
-
+            echo "Current directory: $(pwd)" | tee ~/deploy.log
             cd $HOME
-
-            echo "Current directory: $(pwd)"
+            echo "Current directory: $(pwd)" | tee -a ~/deploy.log
 
             if [ ! -d "balbambalbam-ai-server" ]; then
               git clone https://github.com/Capstone-4Potato/ai-server.git balbambalbam-ai-server
             fi
 
             cd balbambalbam-ai-server/
-
             git pull origin main
-
-            cd balbambalbam-ai-server/
 
             if [ ! -d ".venv" ]; then
               python3 -m venv .venv
             fi
 
             source .venv/bin/activate
-            
             pip install --upgrade pip
-
             pip install -r requirements.txt
-
+            
             nohup .venv/bin/uvicorn app:app --host 0.0.0.0 --port 5000 >> ai-server.log 2>&1 &
+
+            sleep 5
+            
+            if ! pgrep -f "uvicorn app:app"; then
+              echo "Error: Uvicorn failed to start. Check ai-server.log for details." | tee -a ~/deploy.log
+              exit 1
+            else
+              echo "Uvicorn started successfully." | tee -a ~/deploy.log
+            fi
