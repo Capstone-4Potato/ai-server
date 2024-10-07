@@ -47,7 +47,7 @@ jobs:
 
             nohup uvicorn app:app --host 0.0.0.0 --port 5000 --reload >> ai-server.log 2>&1 &
             
-            sleep 5
+            sleep 10
 
             if ! pgrep -f "uvicorn app:app"; then
               echo "Error: Uvicorn failed to start. Check ai-server.log for details." | tee -a ~/deploy.log
