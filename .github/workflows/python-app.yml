@@ -1,4 +1,4 @@
-name: Python CI with Docker
+name: CI/CD Pipeline
 
 on:
   push:
@@ -10,30 +10,51 @@ env:
   DOCKER_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/balbam-dev
 
 jobs:
-  build-docker-image:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
-      - name: Cache pip packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: ${{ runner.os }}-pip
+
       - name: Install dependencies
+        working-directory: balbambalbam-ai-server  # balbambalbam-ai-server 디렉토리에서 실행
         run: |
-          pip install --upgrade pip
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
+
       - name: Build Docker image
+        working-directory: balbambalbam-ai-server  # balbambalbam-ai-server 디렉토리에서 실행
         run: docker build -t ${{ env.DOCKER_IMAGE }} .
+
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
       - name: Push Docker image
         run: docker push ${{ env.DOCKER_IMAGE }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pull latest Docker image
+        run: docker pull ${{ env.DOCKER_IMAGE }}
+
+      - name: Stop existing container
+        run: docker stop github-actions-demo || true
+
+      - name: Remove existing container
+        run: docker rm github-actions-demo || true
+
+      - name: Run new container
+        run: |
+          docker run --name github-actions-demo \
+            --rm -d -p 8000:8000 \
+            ${{ env.DOCKER_IMAGE }}
