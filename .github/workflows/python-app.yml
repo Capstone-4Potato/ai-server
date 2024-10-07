@@ -25,7 +25,7 @@ jobs:
             sudo apt-get install -y python3-pip python3-venv git
             
             if [ ! -d "~/balbambalbam-ai-server" ]; then
-              git clone https://github.com/your-repo/balbambalbam-ai-server.git /balbambalbam-ai-server
+              git clone https://github.com/Capstone-4Potato/ai-server.git /balbambalbam-ai-server
             fi
 
             cd ~/balbambalbam-ai-server
