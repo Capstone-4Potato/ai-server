@@ -49,7 +49,7 @@ jobs:
             pip install --upgrade pip
             pip install -r requirements.txt
 
-            pkill -f "uvicorn app:app"
+            pkill -9 -f "uvicorn app:app"
             nohup uvicorn app:app --host 0.0.0.0 --port 5000 >> ai-server.log 2>&1 &
 
             sleep 5
