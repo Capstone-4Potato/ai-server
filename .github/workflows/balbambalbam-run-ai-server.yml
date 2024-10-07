@@ -35,20 +35,21 @@ jobs:
 
             cd balbambalbam-ai-server/
 
+            echo "NAVER_TTS_API_ID=${{ secrets.NAVER_TTS_API_ID }}" > .env
+            echo "NAVER_TTS_API_SECRET=${{ secrets.NAVER_TTS_API_SECRET }}" >> .env
+            export $(grep -v '^#' .env | xargs)
+            rm .env
+
             if [ ! -d ".venv" ]; then
               python3 -3.10 -m venv .venv
             fi
 
             source .venv/bin/activate
+            
             pip install --upgrade pip
             pip install -r requirements.txt
 
-            echo "NAVER_TTS_API_ID=${{ secrets.NAVER_TTS_API_ID }}" > ./utils/.env
-            echo "NAVER_TTS_API_SECRET=${{ secrets.NAVER_TTS_API_SECRET }}" >> ./utils/.env
-            export $(grep -v '^#' ./utils/.env | xargs)
-            rm ./utils/.env
-
-            nohup .venv/bin/uvicorn app:app --host 0.0.0.0 --port 5000 >> ai-server.log 2>&1 &
+            nohup uvicorn app:app --host 0.0.0.0 --port 5000 >> ai-server.log 2>&1 &
 
             sleep 5
             
