@@ -12,7 +12,6 @@ jobs:
       NAVER_TTS_API_ID: '${{ secrets.NAVER_TTS_API_ID }}'
       NAVER_TTS_API_SECRET: '${{ secrets.NAVER_TTS_API_SECRET }}'
       
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -24,13 +23,12 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
-          script: |
-            source ~/env.sh
-            
+          script: |            
             sudo apt-get update
             sudo apt-get install -y python3-pip python3-venv git
             
             cd $HOME
+            source .bashrc
 
             if [ ! -d "balbambalbam-ai-server" ]; then
               git clone https://github.com/Capstone-4Potato/ai-server.git balbambalbam-ai-server
