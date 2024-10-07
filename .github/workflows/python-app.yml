@@ -34,9 +34,11 @@ jobs:
               git clone https://github.com/Capstone-4Potato/ai-server.git balbambalbam-ai-server
             fi
 
-            cd balbambalbam-ai-server
+            cd balbambalbam-ai-server/
 
             git pull origin main
+
+            cd balbambalbam-ai-server/
 
             if [ ! -d ".venv" ]; then
               python3 -m venv .venv
