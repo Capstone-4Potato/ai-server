@@ -43,8 +43,8 @@ jobs:
             pip install --upgrade pip
             pip install -r requirements.txt
 
-            echo "NAVER_TTS_API_ID=${{ secrets.NAVER_TTS_API_ID }}" > ./src/.env
-            echo "NAVER_TTS_API_SECRET=${{ secrets.NAVER_TTS_API_SECRET }}" >> ./src/.env
+            echo "NAVER_TTS_API_ID=${{ secrets.NAVER_TTS_API_ID }}" > ./utils/.env
+            echo "NAVER_TTS_API_SECRET=${{ secrets.NAVER_TTS_API_SECRET }}" >> ./utils/.env
 
             nohup .venv/bin/uvicorn app:app --host 0.0.0.0 --port 5000 >> ai-server.log 2>&1 &
 
