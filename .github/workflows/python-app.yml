@@ -24,19 +24,20 @@ jobs:
             sudo apt-get update
             sudo apt-get install -y python3-pip python3-venv git
             
-            echo "Current directory: $(pwd)" | tee ~/deploy.log
             cd $HOME
-            echo "Current directory: $(pwd)" | tee -a ~/deploy.log
 
             if [ ! -d "balbambalbam-ai-server" ]; then
               git clone https://github.com/Capstone-4Potato/ai-server.git balbambalbam-ai-server
             fi
 
             cd balbambalbam-ai-server/
+            
             git pull origin main
 
+            cd balbambalbam-ai-server/
+
             if [ ! -d ".venv" ]; then
-              python3 -m venv .venv
+              python3 -3.10 -m venv .venv
             fi
 
             source .venv/bin/activate
