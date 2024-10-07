@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 env:
-  DOCKER_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/balbam-dev  # 슬래시가 아닌 username으로 시작해야 함
+  DOCKER_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/balbam-dev
 
 jobs:
   build:
@@ -27,15 +27,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Build Docker image
-        working-directory: balbambalbam-ai-server
-        run: docker build -t ${{ env.DOCKER_IMAGE }} .  # DOCKER_IMAGE를 사용하여 올바르게 태그
-
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Build Docker image
+        working-directory: balbambalbam-ai-server
+        run: docker build -t ${{ env.DOCKER_IMAGE }} .
 
       - name: Push Docker image
         run: docker push ${{ env.DOCKER_IMAGE }}
