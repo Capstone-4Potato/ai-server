@@ -24,7 +24,11 @@ jobs:
             sudo apt-get update
             sudo apt-get install -y python3-pip python3-venv git
             
+            echo "Current directory: $(pwd)"
+
             cd $HOME
+
+            echo "Current directory: $(pwd)"
 
             if [ ! -d "balbambalbam-ai-server" ]; then
               git clone https://github.com/Capstone-4Potato/ai-server.git /balbambalbam-ai-server
