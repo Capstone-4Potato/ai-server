@@ -20,7 +20,7 @@ async def feedback_route(request: Request):
     except HTTPException as e:
         raise e
     
-@app.post("/ai/feedback_test")
+@app.post("/ai/feedback-test")
 async def feedback_route_test(request: Request):
     try:
         return await get_feedback_request_test(request)

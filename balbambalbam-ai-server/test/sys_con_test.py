@@ -67,7 +67,7 @@ if __name__ == "__main__":
     
     args = parser.parse_args()
     base_url = 'http://127.0.0.1:5000/ai/'
-    endpoints = ['eng-pronunciation', 'eng-translation', 'kor-translation', 'db-voice', 'voice', 'test', 'feedback', 'feedback_test']
+    endpoints = ['eng-pronunciation', 'eng-translation', 'kor-translation', 'db-voice', 'voice', 'test', 'feedback', 'feedback-test']
 
     if args.endpoint:
         if args.endpoint in endpoints:
