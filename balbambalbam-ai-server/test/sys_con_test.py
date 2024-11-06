@@ -20,6 +20,8 @@ def get_test_data(endpoint):
         return {'text': '아'}
     elif endpoint == 'eng-translation':
         return {'text': '아'}
+    elif endpoint == 'kor-translation':
+        return {'text': 'Hi'}
     elif endpoint == 'db-voice':
         return {
             'text': '몸 조리 잘 해',
@@ -36,6 +38,12 @@ def get_test_data(endpoint):
             'correctText' : '안녕'
         }
     elif endpoint == 'feedback':
+        return {
+            'userAudio' : read_file_to_base64('hello_wav_base64.txt'),
+            'correctAudio' : read_file_to_base64('hello_wav_base64.txt'),
+            'pronunciation' : '안녕'
+        }
+    elif endpoint == 'feedback_test':
         return {
             'userAudio' : read_file_to_base64('hello_wav_base64.txt'),
             'correctAudio' : read_file_to_base64('hello_wav_base64.txt'),
@@ -59,7 +67,7 @@ if __name__ == "__main__":
     
     args = parser.parse_args()
     base_url = 'http://127.0.0.1:5000/ai/'
-    endpoints = ['eng-pronunciation', 'eng-translation', 'db-voice', 'voice', 'test', 'feedback']
+    endpoints = ['eng-pronunciation', 'eng-translation', 'kor-translation', 'db-voice', 'voice', 'test', 'feedback', 'feedback_test']
 
     if args.endpoint:
         if args.endpoint in endpoints:
