@@ -132,6 +132,13 @@ def translate_korean_to_english(text):
     translated = translator.translate(text, src='ko', dest='en')
     return translated.text
 
+
+def translate_english_to_korean(text):
+    print(text)
+    translator = Translator()
+    translated = translator.translate(text, src='en', dest='ko')
+    return translated.text
+
 async def generate_eng_pronunciation(text):
     r = Romanizer(text)
     return r.romanize()
